@@ -1,0 +1,192 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Navegação */
+#menu-principal {
+  background-color: #0d6efd;
+  padding: 15px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-lista {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.nav-lista li {
+  margin: 0 15px;
+}
+
+.nav-lista a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.nav-lista a:hover {
+  color: #dce3f2;
+}
+
+/* Cabeçalho */
+header {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #ccc;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  color: #0d6efd;
+}
+
+header h2 {
+  font-size: 1.3rem;
+  color: #666;
+  margin-top: 10px;
+}
+
+/* Layout Principal */
+.curriculo-container {
+  display: flex;
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 20px;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+/* Coluna Lateral */
+.coluna-lateral {
+  flex: 1 1 300px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.titulo-secao-lateral {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  color: #0d6efd;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+}
+
+.lista-contato,
+.lista-redes,
+.lista-habilidades {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 10px;
+}
+
+.lista-contato li,
+.lista-redes li,
+.lista-habilidades li {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.icone-contato,
+.icone-rede {
+  margin-right: 10px;
+  color: #0d6efd;
+}
+
+/* Coluna Principal */
+.coluna-principal {
+  flex: 2 1 600px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.titulo-secao-principal {
+  color: #0d6efd;
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+}
+
+.item-experiencia,
+.item-formacao {
+  margin-bottom: 20px;
+}
+
+.cargo-titulo,
+.curso-titulo {
+  font-weight: bold;
+  color: #333;
+}
+
+.empresa-periodo,
+.instituicao-periodo {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+}
+
+.lista-responsabilidades {
+  padding-left: 20px;
+  list-style-type: disc;
+  color: #444;
+}
+
+/* Rodapé */
+footer {
+  text-align: center;
+  padding: 15px;
+  background-color: #0d6efd;
+  color: #fff;
+  margin-top: 40px;
+}
+
+/* Links */
+a {
+  color: #0d6efd;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .curriculo-container {
+      flex-direction: column;
+      padding: 10px;
+  }
+
+  .coluna-lateral,
+  .coluna-principal {
+      width: 100%;
+  }
+
+  .nav-lista {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .nav-lista li {
+      margin: 10px 0;
+  }
+}
