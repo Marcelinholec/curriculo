@@ -1,0 +1,36 @@
+/*Seletor de elementos*/
+p{
+    color: blue;
+}
+h1{
+    color: navy;
+}
+
+/*Seletor de id*/
+#mesmo{
+    text-align: center;
+    color: brown;
+}
+
+/*Seletores de classe*/
+.myclass{
+    border: 0.2em ridge pink;
+}
+/*junção de seletores*/
+li.myclass{
+    font-size: xx-large;
+}
+
+.newclass{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+
+.teste-cores{
+    padding: 2%;
+    background-color: rgba(160,236,253,0.4);
+}
