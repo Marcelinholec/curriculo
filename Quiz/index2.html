@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Londrina Esporte Clube</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    /* Cores oficiais do Londrina */
+    :root {
+      --londrina-azul: #00BFFF;
+      --londrina-azul-escuro: #0099CC;
+      --londrina-branco: #FFFFFF;
+    }
+
+    body {
+      background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* Header com identidade visual */
+    .header-londrina {
+      background: linear-gradient(135deg, var(--londrina-azul) 0%, var(--londrina-azul-escuro) 100%);
+      color: var(--londrina-branco);
+      padding: 2.5rem 1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+    }
+
+    .header-londrina h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .header-londrina .subtitle {
+      font-size: 1.2rem;
+      font-weight: 300;
+      letter-spacing: 1px;
+    }
+
+    .header-londrina .logo-londrina {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 1rem;
+      animation: float 3s ease-in-out infinite;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Cards das perguntas */
+    .question-card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 191, 255, 0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+    }
+
+    .question-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(0, 191, 255, 0.25);
+    }
+
+    .question-card .card-header {
+      background: linear-gradient(135deg, var(--londrina-azul) 0%, var(--londrina-azul-escuro) 100%);
+      color: var(--londrina-branco);
+      font-weight: bold;
+      font-size: 1.1rem;
+      padding: 1rem 1.5rem;
+      border: none;
+    }
+
+    .question-card .card-body {
+      padding: 1.5rem;
+      background-color: white;
+    }
+
+    .question-card .card-body p {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Botões de opção */
+    .btn-option {
+      margin: 0.5rem 0;
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      font-weight: 500;
+      border: 2px solid var(--londrina-azul);
+      color: var(--londrina-azul);
+      background-color: white;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+    }
+
+    .btn-option:hover:not(:disabled) {
+      background-color: var(--londrina-azul);
+      color: white;
+      transform: scale(1.02);
+    }
+
+    .btn-option:disabled {
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .correct {
+      background-color: #28a745 !important;
+      color: white !important;
+      border-color: #28a745 !important;
+      font-weight: bold;
+    }
+
+    .wrong {
+      background-color: #dc3545 !important;
+      color: white !important;
+      border-color: #dc3545 !important;
+    }
+
+    /* Card de resultado */
+    .result-card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 191, 255, 0.3);
+      overflow: hidden;
+    }
+
+    .result-card .card-header {
+      background: linear-gradient(135deg, var(--londrina-azul) 0%, var(--londrina-azul-escuro) 100%);
+      color: var(--londrina-branco);
+      font-weight: bold;
+      font-size: 1.3rem;
+      padding: 1.2rem;
+    }
+
+    .result-card .card-body {
+      padding: 2rem;
+      background-color: white;
+      text-align: center;
+    }
+
+    .score-display {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 1rem 0;
+    }
+
+    .btn-reset {
+      background: linear-gradient(135deg, var(--londrina-azul) 0%, var(--londrina-azul-escuro) 100%);
+      border: none;
+      color: white;
+      padding: 0.75rem 2rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-reset:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0, 191, 255, 0.4);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Footer */
+    .footer-londrina {
+      background-color: var(--londrina-azul-escuro);
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    /* Badge de progresso */
+    .progress-badge {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, var(--londrina-azul) 0%, var(--londrina-azul-escuro) 100%);
+      color: white;
+      padding: 0.75rem 1.25rem;
+      border-radius: 25px;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  <!-- Badge de progresso -->
+  <div class="progress-badge" id="progress-badge">
+    <i class="bi bi-trophy-fill"></i> <span id="progress-text">0/10</span>
+  </div>
+
+  <!-- Header -->
+  <header class="header-londrina text-center">
+    <img src="https://upload.wikimedia.org/wikipedia/pt/8/83/LondrinaEC.png" alt="Logo Londrina EC" class="logo-londrina">
+    <h1>Quiz</h1>
+    <p class="subtitle">Londrina Esporte Clube - Teste seus conhecimentos!</p>
+  </header>
+
+  <!-- Quiz Container -->
+  <main class="container" style="max-width: 800px;" id="quiz">
+    <!-- Pergunta 1 -->
+    <div class="card question-card mb-4">
+      <div class="card-header">
+        <i class="bi bi-1-circle-fill"></i> Pergunta 1
+      </div>
+      <div class="card-body">
+        <p>Em que ano o Londrina Esporte Clube foi fundado?</p>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">1946</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,true)">1956</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">1966</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">1976</button>
+      </div>
+    </div>
+
+    <!-- Pergunta 2 -->
+    <div class="card question-card mb-4">
+      <div class="card-header">
+        <i class="bi bi-2-circle-fill"></i> Pergunta 2
+      </div>
+      <div class="card-body">
+        <p>Qual é o apelido mais conhecido do Londrina?</p>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Leão do Norte</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,true)">Tubarão</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Fantasma</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Canarinho</button>
+      </div>
+    </div>
+
+    <!-- Pergunta 3 -->
+    <div class="card question-card mb-4">
+      <div class="card-header">
+        <i class="bi bi-3-circle-fill"></i> Pergunta 3
+      </div>
+      <div class="card-body">
+        <p>Quais são as cores tradicionais do Londrina?</p>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Verde e branco</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,true)">Azul celeste e branco</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Vermelho e preto</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Amarelo e azul</button>
+      </div>
+    </div>
+
+    <!-- Pergunta 4 -->
+    <div class="card question-card mb-4">
+      <div class="card-header">
+        <i class="bi bi-4-circle-fill"></i> Pergunta 4
+      </div>
+      <div class="card-body">
+        <p>Qual título nacional o Londrina conquistou em 1980?</p>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Campeonato Brasileiro Série A</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,true)">Campeonato Brasileiro Série B</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Copa do Brasil</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Primeira Liga</button>
+      </div>
+    </div>
+
+    <!-- Pergunta 5 -->
+    <div class="card question-card mb-4">
+      <div class="card-header">
+        <i class="bi bi-5-circle-fill"></i> Pergunta 5
+      </div>
+      <div class="card-body">
+        <p>Qual foi o título conquistado pelo Londrina em 2017?</p>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Campeonato Paranaense</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Copa do Brasil</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,true)">Primeira Liga</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Série C</button>
+      </div>
+    </div>
+
+    <!-- Pergunta 6 -->
+    <div class="card question-card mb-4">
+      <div class="card-header">
+        <i class="bi bi-6-circle-fill"></i> Pergunta 6
+      </div>
+      <div class="card-body">
+        <p>Qual é o estádio tradicional do Londrina Esporte Clube?</p>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Estádio Couto Pereira</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Estádio VGD</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Arena da Baixada</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,true)">Estádio Jacy Scaff (Café)</button>
+      </div>
+    </div>
+
+    <!-- Pergunta 7 -->
+    <div class="card question-card mb-4">
+      <div class="card-header">
+        <i class="bi bi-7-circle-fill"></i> Pergunta 7
+      </div>
+      <div class="card-body">
+        <p>Quem é considerado o maior artilheiro da história do Londrina?</p>
+        <button class="btn btn-option" onclick="checkAnswer(this,true)">Carlos Alberto Garcia</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Paulinho Kobayashi</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Roberto Brum</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Túlio Maravilha</button>
+      </div>
+    </div>
+
+    <!-- Pergunta 8 -->
+    <div class="card question-card mb-4">
+      <div class="card-header">
+        <i class="bi bi-8-circle-fill"></i> Pergunta 8
+      </div>
+      <div class="card-body">
+        <p>Qual rivalidade regional é conhecida como "Clássico do Café"?</p>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Contra o Coritiba</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Contra o Paraná Clube</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,true)">Contra o Maringá</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Contra o Atlético Paranaense</button>
+      </div>
+    </div>
+
+    <!-- Pergunta 9 -->
+    <div class="card question-card mb-4">
+      <div class="card-header">
+        <i class="bi bi-9-circle-fill"></i> Pergunta 9
+      </div>
+      <div class="card-body">
+        <p>Qual foi a melhor campanha do Londrina na Série A do Brasileirão?</p>
+        <button class="btn btn-option" onclick="checkAnswer(this,true)">1977</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">1981</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">1982</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">1992</button>
+      </div>
+    </div>
+
+    <!-- Pergunta 10 -->
+    <div class="card question-card mb-4">
+      <div class="card-header">
+        <i class="bi bi-trophy-fill"></i> Pergunta 10
+      </div>
+      <div class="card-body">
+        <p>Qual jogador revelado pelo Londrina brilhou no Bayern de Munique?</p>
+        <button class="btn btn-option" onclick="checkAnswer(this,true)">Élber</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Dagoberto</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Alex</button>
+        <button class="btn btn-option" onclick="checkAnswer(this,false)">Ricardinho</button>
+      </div>
+    </div>
+
+    <!-- Card de Resultado -->
+    <div class="card result-card mt-5 hidden" id="result-card">
+      <div class="card-header">
+        <i class="bi bi-award-fill"></i> Resultado Final
+      </div>
+      <div class="card-body">
+        <div class="score-display" id="score-text"></div>
+        <p id="rating-text" class="fs-4 mb-4"></p>
+        <button class="btn btn-reset" onclick="resetQuiz()">
+          <i class="bi bi-arrow-clockwise"></i> Jogar Novamente
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-londrina">
+    <p class="mb-0"><i class="bi bi-heart-fill"></i> Feito com Orgulho para os Torcedores Apaixonados</p>
+    <small>Londrina Esporte Clube</small>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let score = 0;
+    let answeredCards = 0;
+
+    function updateProgress() {
+      document.getElementById('progress-text').textContent = `${answeredCards}/10`;
+    }
+
+    function checkAnswer(button, isCorrect) {
+      // Desabilita todos os botões da mesma pergunta
+      const container = button.parentElement;
+      const options = container.querySelectorAll("button");
+      options.forEach(btn => btn.disabled = true);
+
+      // Marca a resposta selecionada
+      button.classList.add(isCorrect ? "correct" : "wrong");
+
+      // Se errou, destaca a resposta correta
+      if (!isCorrect) {
+        const correctBtn = Array.from(options).find(btn => btn.onclick.toString().includes("true"));
+        if (correctBtn) {
+          correctBtn.classList.add("correct");
+        }
+      }
+
+      // Atualiza pontuação
+      if (isCorrect) score++;
+
+      // Controla perguntas respondidas
+      const card = container.closest(".card");
+      if (!card.dataset.answered) {
+        card.dataset.answered = "true";
+        answeredCards++;
+        updateProgress();
+      }
+
+      // Quando todas as 10 estiverem respondidas, mostra resultado
+      if (answeredCards >= 10) {
+        setTimeout(showResult, 500);
+      }
+    }
+
+    function showResult() {
+      const resultCard = document.getElementById("result-card");
+      const scoreText = document.getElementById("score-text");
+      const ratingText = document.getElementById("rating-text");
+
+      scoreText.innerHTML = `<i class="bi bi-star-fill text-warning"></i> ${score} de 10 pontos`;
+
+      // Avaliação personalizada
+      if (score < 3) {
+        ratingText.innerHTML = '<i class="bi bi-emoji-frown"></i> Você precisa estudar mais sobre o Tubarão!';
+        ratingText.className = "fs-4 mb-4 text-danger fw-bold";
+      } else if (score <= 5) {
+        ratingText.innerHTML = '<i class="bi bi-emoji-neutral"></i> Bom começo! Continue aprendendo sobre o LEC!';
+        ratingText.className = "fs-4 mb-4 text-warning fw-bold";
+      } else if (score <= 7) {
+        ratingText.innerHTML = '<i class="bi bi-emoji-smile"></i> Muito bom! Você conhece bem o Londrina!';
+        ratingText.className = "fs-4 mb-4 text-info fw-bold";
+      } else {
+        ratingText.innerHTML = '<i class="bi bi-emoji-heart-eyes"></i> Parabéns! Você é um verdadeiro torcedor do Tubarão!';
+        ratingText.className = "fs-4 mb-4 text-success fw-bold";
+      }
+
+      resultCard.classList.remove("hidden");
+      resultCard.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function resetQuiz() {
+      // Reseta pontuação e estado
+      score = 0;
+      answeredCards = 0;
+      updateProgress();
+
+      // Reseta todos os botões
+      document.querySelectorAll(".btn-option").forEach(btn => {
+        btn.disabled = false;
+        btn.classList.remove("correct", "wrong");
+      });
+
+      // Limpa marcação de cartões respondidos
+      document.querySelectorAll(".card").forEach(card => {
+        delete card.dataset.answered;
+      });
+
+      // Esconde resultado
+      document.getElementById("result-card").classList.add("hidden");
+
+      // Rola para o topo
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // Inicializa o progresso
+    updateProgress();
+  </script>
+</body>
+</html>
